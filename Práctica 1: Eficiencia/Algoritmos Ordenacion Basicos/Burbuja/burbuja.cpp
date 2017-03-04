@@ -1,24 +1,18 @@
 #include <iostream>
 #include <cstdlib>  // Para generación de números pseudoaleatorios
-#include <chrono>// Recursos para medir tiempos
+#include <chrono>   // Recursos para medir tiempos
 using namespace std;
 using namespace std::chrono;
 
-int seleccion(int *v, int tam) {
-    int  temp, loc, min;
-    for(int i=0;i<tam-1;i++) {
-        min=v[i];
-        loc=i;
-        for(int j=i+1;j<tam;j++) {
-            if(min>v[j]) {
-                min=v[j];
-                loc=j;
-            }
+int burbuja(int *v, int tam){
+    int temp;
+    for(int i=1;i<tam;++i){
+        for(int j=0;j<(tam-i);++j)
+        if(v[j]>v[j+1]) {
+            temp=v[j];
+            v[j]=v[j+1];
+            v[j+1]=temp;
         }
-
-        temp=v[i];
-        v[i]=v[loc];
-        v[loc]=temp;
     }
 }
 
@@ -29,63 +23,58 @@ void sintaxis() {
     exit(EXIT_FAILURE);
 }
 
-
-void inicializar(int *v, int tam, int caso)
-{
-    switch (caso)
-    {
+void inicializar(int *v, int tam, int caso) {
+    switch (caso) {
         case 1:
         for (int i = 0; i < tam; i++)
-        v[i] = i;
+            v[i] = i;
         break;
 
         case 2:
         for (int i = 0; i < tam; i++)
-        v[i] = tam - i;
+            v[i] = tam - i;
         break;
 
         case 3:
         for (int i = 0; i < tam; i++)
-        v[i] = rand();
+            v[i] = rand();
         break;
     }
 }
 
-
-
 int main(int argc, char * argv[]) {
     // Lectura de parámetros
     if (argc!=3)
-    sintaxis();
+        sintaxis();
     int tam=atoi(argv[1]);     // Tamaño del vector
     int caso=atoi(argv[2]);    // Valor máximo
     if (tam<=0 || (caso!=1 && caso !=2 && caso != 3))
-    sintaxis();
+        sintaxis();
 
     // Generación del vector aleatorio
     int *v=new int[tam];       // Reserva de memoria
     srand(time(0));
-    inicializar(v,tam,caso);    // Generar aleatorio [0,caso[
+    inicializar(v,tam,caso);
 
     high_resolution_clock::time_point start,//punto de inicio
     end; //punto de fin
     duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
 
     //En el caso promedio se ejecuta varias veces y se hace la media
-    int veces = (caso == 3 )? 15 : 1;
-    
+    int veces = (caso == 3 )? 5 : 1;
+
     for (int i = 0 ; i < veces; i++) {
         if(caso == 3) inicializar(v,tam,caso);
 
         start = high_resolution_clock::now(); //iniciamos el punto de inicio
 
-        seleccion(v,tam);
+        burbuja(v,tam);
 
         end = high_resolution_clock::now(); //anotamos el punto de de fin
         //el tiempo transcurrido es
         tiempo_transcurrido += duration_cast<duration<double> >(end - start);
     }
-    
+
     tiempo_transcurrido /= veces;
     // Mostramos resultados
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;

@@ -1,7 +1,7 @@
 #!/bin/csh
 @ inicio = 100
-@ fin = 1000000
-@ incremento = 100
+@ fin = 100000
+@ incremento = 1000
 @ i = $inicio
 
 echo `g++ ./APO/usoapo.cpp -o ./APO/apo.out`

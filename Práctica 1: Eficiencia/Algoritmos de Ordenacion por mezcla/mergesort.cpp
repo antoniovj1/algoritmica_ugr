@@ -114,14 +114,12 @@ Implementaci�n de las funciones
 **/
 
 
-inline static void insercion(int T[], int num_elem)
-{
+inline static void insercion(int T[], int num_elem) {
     insercion_lims(T, 0, num_elem);
 }
 
 
-static void insercion_lims(int T[], int inicial, int final)
-{
+static void insercion_lims(int T[], int inicial, int final) {
     int i, j;
     int aux;
     for (i = inicial + 1; i < final; i++) {
@@ -138,15 +136,12 @@ static void insercion_lims(int T[], int inicial, int final)
 
 int UMBRAL_MS = 100;
 
-void mergesort(int T[], int num_elem)
-{
+void mergesort(int T[], int num_elem) {
     mergesort_lims(T, 0, num_elem);
 }
 
-static void mergesort_lims(int T[], int inicial, int final)
-{
-    if (final - inicial < UMBRAL_MS)
-    {
+static void mergesort_lims(int T[], int inicial, int final) {
+    if (final - inicial < UMBRAL_MS) {
         insercion_lims(T, inicial, final);
     } else {
         int k = (final - inicial)/2;
@@ -173,16 +168,14 @@ static void mergesort_lims(int T[], int inicial, int final)
 }
 
 
-static void fusion(int T[], int inicial, int final, int U[], int V[])
-{
+static void fusion(int T[], int inicial, int final, int U[], int V[]) {
     int j = 0;
     int k = 0;
-    for (int i = inicial; i < final; i++)
-    {
+    for (int i = inicial; i < final; i++) {
         if (U[j] < V[k]) {
             T[i] = U[j];
             j++;
-        } else{
+        } else {
             T[i] = V[k];
             k++;
         };
@@ -199,40 +192,37 @@ void sintaxis() {
     exit(EXIT_FAILURE);
 }
 
-void inicializar(int *v, int tam, int caso)
-{
-    switch (caso)
-    {
+void inicializar(int *v, int tam, int caso) {
+    switch (caso) {
         case 1:
         for (int i = 0; i < tam; i++)
-        v[i] = i;
+            v[i] = i;
         break;
 
         case 2:
         for (int i = 0; i < tam; i++)
-        v[i] = tam - i;
+            v[i] = tam - i;
         break;
 
         case 3:
         for (int i = 0; i < tam; i++)
-        v[i] = rand();
+            v[i] = rand();
         break;
     }
 }
 
 
-int main(int argc, char * argv[])
-{
+int main(int argc, char * argv[]) {
 
-   // Lectura de parámetros
+    // Lectura de parámetros
     if (argc!=4)
-      sintaxis();
+        sintaxis();
     int tam=atoi(argv[1]);     // Tamaño del vector
     int caso=atoi(argv[2]);    // Valor máximo
     UMBRAL_MS = atoi(argv[3]);
 
     if (tam<=0 || (caso!=1 && caso !=2 && caso != 3))
-      sintaxis();
+        sintaxis();
 
     // Generación del vector aleatorio
     int *v=new int[tam];       // Reserva de memoria
@@ -244,8 +234,8 @@ int main(int argc, char * argv[])
     duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
 
     //En el caso promedio se ejecuta varias veces y se hace la media
-    int veces = (caso == 3 )? 15 : 1;
-    
+    int veces = (caso == 3 )? 5 : 1;
+
     for (int i = 0 ; i < veces; i++) {
         if(caso == 3) inicializar(v,tam,caso);
 
@@ -257,7 +247,7 @@ int main(int argc, char * argv[])
         //el tiempo transcurrido es
         tiempo_transcurrido += duration_cast<duration<double> >(end - start);
     }
-    
+
     tiempo_transcurrido /= veces;
     // Mostramos resultados
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
