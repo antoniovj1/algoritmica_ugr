@@ -38,7 +38,6 @@ void inicializar(int *v, int tam, int caso)
         break;
 
         case 3:
-        srand(time(0));
         for (int i = 0; i < tam; i++)
         v[i] = rand();
         break;
@@ -56,20 +55,29 @@ int main(int argc, char * argv[]) {
 
     // Generación del vector aleatorio
     int *v=new int[tam];       // Reserva de memoria
+    srand(time(0));
     inicializar(v,tam,caso);
 
     high_resolution_clock::time_point start,//punto de inicio
     end; //punto de fin
     duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
 
-    start = high_resolution_clock::now(); //iniciamos el punto de inicio
+    //En el caso promedio se ejecuta varias veces y se hace la media
+    int veces = (caso == 3 )? 15 : 1;
+    
+    for (int i = 0 ; i < veces; i++) {
+        if(caso == 3) inicializar(v,tam,caso);
 
-    burbuja(v,tam);
+        start = high_resolution_clock::now(); //iniciamos el punto de inicio
 
-    end = high_resolution_clock::now(); //anotamos el punto de de fin
-    //el tiempo transcurrido es
-    tiempo_transcurrido  = duration_cast<duration<double> >(end - start);
+        burbuja(v,tam);
 
+        end = high_resolution_clock::now(); //anotamos el punto de de fin
+        //el tiempo transcurrido es
+        tiempo_transcurrido += duration_cast<duration<double> >(end - start);
+    }
+    
+    tiempo_transcurrido /= veces;
     // Mostramos resultados
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
 
