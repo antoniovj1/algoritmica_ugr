@@ -7,7 +7,9 @@
 #include <cstdlib>
 #include <climits>
 #include <cassert>
+#include <chrono>   // Recursos para medir tiempos
 
+using namespace std::chrono;
 using namespace std;
 
 
@@ -134,7 +136,7 @@ static void insercion_lims(int T[], int inicial, int final)
 }
 
 
-const int UMBRAL_MS = 100;
+int UMBRAL_MS = 100;
 
 void mergesort(int T[], int num_elem)
 {
@@ -188,77 +190,71 @@ static void fusion(int T[], int inicial, int final, int U[], int V[])
 }
 
 
+void sintaxis() {
+    cerr << "Sintaxis:" << endl;
+    cerr << "  TAM: Tamaño del vector (>0)" << endl;
+    cerr << "  Caso: 1 -> Mejor 2 -> Peor 3 -> Promedio" << endl;
+    cerr << "  Umbral insercion" << endl;
 
+    exit(EXIT_FAILURE);
+}
+
+void inicializar(int *v, int tam, int caso)
+{
+    switch (caso)
+    {
+        case 1:
+        for (int i = 0; i < tam; i++)
+        v[i] = i;
+        break;
+
+        case 2:
+        for (int i = 0; i < tam; i++)
+        v[i] = tam - i;
+        break;
+
+        case 3:
+        srand(time(0));
+        for (int i = 0; i < tam; i++)
+        v[i] = rand();
+        break;
+    }
+}
 
 
 int main(int argc, char * argv[])
 {
 
-    if (argc != 2)
-    {
-        cerr << "Formato " << argv[0] << " <num_elem>" << endl;
-        return -1;
-    }
+   // Lectura de parámetros
+    if (argc!=4)
+      sintaxis();
+    int tam=atoi(argv[1]);     // Tamaño del vector
+    int caso=atoi(argv[2]);    // Valor máximo
+    UMBRAL_MS = atoi(argv[3]);
 
-    int n = atoi(argv[1]);
+    if (tam<=0 || (caso!=1 && caso !=2 && caso != 3))
+      sintaxis();
 
-    int * T = new int[n];
-    assert(T);
+    // Generación del vector aleatorio
+    int *v=new int[tam];       // Reserva de memoria
+    inicializar(v,tam,caso);
 
-    srandom(time(0));
+    high_resolution_clock::time_point start,//punto de inicio
+    end; //punto de fin
+    duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
 
-    for (int i = 0; i < n; i++)
-    {
-        T[i] = random();
-    };
+    start = high_resolution_clock::now(); //iniciamos el punto de inicio
 
-    const int TAM_GRANDE = 10000;
-    const int NUM_VECES = 1000;
+    mergesort(v,tam);
 
-    if (n > TAM_GRANDE)
-    {
-        clock_t t_antes = clock();
+    end = high_resolution_clock::now(); //anotamos el punto de de fin
+    //el tiempo transcurrido es
+    tiempo_transcurrido  = duration_cast<duration<double> >(end - start);
 
-        mergesort(T, n);
+    // Mostramos resultados
+    cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
 
-        clock_t t_despues = clock();
-
-        cout << n << "  " << ((double)(t_despues - t_antes)) / CLOCKS_PER_SEC
-        << endl;
-    } else {
-        int * U = new int[n];
-        assert(U);
-
-        for (int i = 0; i < n; i++)
-        U[i] = T[i];
-
-        clock_t t_antes_vacio = clock();
-        for (int veces = 0; veces < NUM_VECES; veces++)
-        {
-            for (int i = 0; i < n; i++)
-            U[i] = T[i];
-        }
-        clock_t t_despues_vacio = clock();
-
-        clock_t t_antes = clock();
-        for (int veces = 0; veces < NUM_VECES; veces++)
-        {
-            for (int i = 0; i < n; i++)
-              U[i] = T[i];
-
-            mergesort(U, n);
-        }
-        clock_t t_despues = clock();
-        cout << n << " \t  " 
-        << ((double) ((t_despues - t_antes) -
-        (t_despues_vacio - t_antes_vacio))) / (CLOCKS_PER_SEC * NUM_VECES)
-        << endl;
-
-        delete [] U;
-    }
-
-
-    delete [] T;
+    delete [] v;     // Liberamos memoria dinámica
 
     return 0;
 };

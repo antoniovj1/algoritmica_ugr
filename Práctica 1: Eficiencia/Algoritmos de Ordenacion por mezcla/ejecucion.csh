@@ -1,7 +1,7 @@
 #!/bin/csh
-@ inicio = 1
-@ fin = 11
-@ incremento = 1
+@ inicio = 100
+@ fin = 1000000
+@ incremento = 10000
 @ i = $inicio
 
 echo `g++ mergesort.cpp -o mergesort.out`
