@@ -10,11 +10,11 @@ int insercion(int *v, int tam) {
         temp=v[i];
         j=i-1;
         while((temp<v[j])&&(j>=0)){
-            v[j+1]=v[j];    //moves element forwvrd
+            v[j+1]=v[j];    
             j=j-1;
         }
 
-        v[j+1]=temp;    //insert element in proper place
+        v[j+1]=temp; 
     }
 }
 

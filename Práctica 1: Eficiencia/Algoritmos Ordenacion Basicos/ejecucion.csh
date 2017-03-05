@@ -1,7 +1,7 @@
 #!/bin/csh
-@ inicio = 100
-@ fin = 100000
-@ incremento = 1000
+@ inicio = 500
+@ fin = 25000
+@ incremento = 500
 @ i = $inicio
 
 echo `g++ ./Burbuja/burbuja.cpp -o ./Burbuja/burbuja.out`

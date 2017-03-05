@@ -1,10 +1,10 @@
 #!/bin/csh
 @ inicio = 1
-@ fin = 11
+@ fin = 10
 @ incremento = 1
 @ i = $inicio
 
-echo `make ./Permutacion/Makefile`
+echo `cd ./Permutacion/ && make && cd ..`
 
 echo > perm_mejor.dat
 echo > perm_peor.dat

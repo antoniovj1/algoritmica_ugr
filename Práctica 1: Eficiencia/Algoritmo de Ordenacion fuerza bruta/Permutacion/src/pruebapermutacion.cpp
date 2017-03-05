@@ -37,17 +37,17 @@ void inicializar(int *v, int tam, int caso) {
     switch (caso) {
         case 1:
         for (int i = 0; i < tam; i++)
-        v[i] = i;
+            v[i] = i;
         break;
 
         case 2:
         for (int i = 0; i < tam; i++)
-        v[i] = tam - i;
+            v[i] = tam - i;
         break;
 
         case 3:
         for (int i = 0; i < tam; i++)
-        v[i] = rand();
+            v[i] = rand();
         break;
     }
 }
@@ -63,7 +63,7 @@ int main(int argc, char * argv[]) {
 
     // Generación del vector aleatorio
     int *v=new int[tam];       // Reserva de memoria
-    Permutacion per(tam);
+    
     srand(time(0));
     inicializar(v,tam,caso);
 
@@ -75,9 +75,13 @@ int main(int argc, char * argv[]) {
     //En el caso promedio se ejecuta varias veces y se hace la media
     int veces = (caso == 3 )? 5 : 1;
 
-    for (int i = 0 ; i < veces; i++) {
-        if(caso == 3) inicializar(v,tam,caso);
-
+    for (int i = 0 ; i < veces  ; i++) {
+        Permutacion per(tam);
+        if(caso == 3) {
+            Permutacion per(tam);
+            inicializar(v,tam,caso);
+        } 
+            
         start = high_resolution_clock::now(); //iniciamos el punto de inicio
 
         permutacion(v,per,tam);
@@ -87,7 +91,7 @@ int main(int argc, char * argv[]) {
         tiempo_transcurrido += duration_cast<duration<double> >(end - start);
     }
 
-    tiempo_transcurrido /= veces;
+     tiempo_transcurrido /= veces;
 
     // Mostramos resultados
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;

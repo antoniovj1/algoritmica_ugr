@@ -6,11 +6,17 @@
 using namespace std;
 using namespace std::chrono;
 
-void ordenar(ABB<int> &a) {
+void ordenar(int *v, int tam)  {
+    ABB<int> a;
     ABB<int>::nodo n;
 
-    for (n = a.begin(); n != a.end(); ++n) {
-	//Op.e;
+    for(int i = 0 ; i < tam ; i++){
+        a.Insertar(v[i]);
+    }
+   
+    int i;
+    for (n = a.begin() , i=0; n != a.end(); ++n, i++) {
+	v[i] = *n;
     }
 }
 
@@ -21,22 +27,22 @@ void sintaxis() {
     exit(EXIT_FAILURE);
 }
 
-void inicializar(ABB<int> &a, int tam, int caso) {
+void inicializar(int *v, int tam, int caso) {
     switch (caso) {
-    case 1:
-	for (int i = 0; i < tam; i++)
-	    a.Insertar(i);
-	break;
+        case 1:
+        for (int i = 0; i < tam; i++)
+            v[i] = i;
+        break;
 
-    case 2:
-	for (int i = 0; i < tam; i++)
-	    a.Insertar(tam - i);
-	break;
+        case 2:
+        for (int i = 0; i < tam; i++)
+            v[i] = tam - i;
+        break;
 
-    case 3:
-	for (int i = 0; i < tam; i++)
-	    a.Insertar(rand());
-	break;
+        case 3:
+        for (int i = 0; i < tam; i++)
+            v[i] = rand();
+        break;
     }
 }
 
@@ -50,9 +56,9 @@ int main(int argc, char *argv[]) {
 	   sintaxis();
 
     // Generación del vector aleatorio
-    ABB<int> a; // Reserva de memoria
+    int *v=new int[tam]; // Reserva de memoria
     srand(time(0));
-    inicializar(a, tam, caso);
+    inicializar(v, tam, caso);
 
     high_resolution_clock::time_point start, //punto de inicio
 	end;				     //punto de fin
@@ -62,11 +68,11 @@ int main(int argc, char *argv[]) {
     int veces = (caso == 3 )? 5 : 1;
 
     for (int i = 0 ; i < veces; i++) {
-        if(caso == 3) inicializar(a,tam,caso);
+        if(caso == 3) inicializar(v,tam,caso);
 
         start = high_resolution_clock::now(); //iniciamos el punto de inicio
 
-        ordenar(a);
+        ordenar(v,tam);
 
         end = high_resolution_clock::now(); //anotamos el punto de de fin
         //el tiempo transcurrido es
