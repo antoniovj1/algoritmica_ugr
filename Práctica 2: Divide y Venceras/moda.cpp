@@ -4,32 +4,30 @@
 #include <utility>
 #include <vector>
 
+#include <queue>
+
 using namespace std;
 using namespace std::chrono;
 
 //Obtiene el maximo y el minimo de un vector O(n)
-pair<int,int> max_min(const vector<int> &v){
+pair<int,int> moda(const vector<int> &v) {
 
-    //Caso base -> El vector tiene solo un elemento
-    if(v.size() == 1){
-        return pair<int,int> (v[0],v[0]);
-    } else {
+    int pivote = v.at(0);
+    vector<int> heterogeneo,homogeneo;
 
-        //Dividimos en dos mitades
-        vector<int> v1(v.begin(), v.begin() + v.size()/2),
-               v2(v.begin() + v.size()/2, v.end());
-        
-        //Llamadas recursivas 
-        pair<int,int> m1 = max_min(v1);
-        pair<int,int> m2 = max_min(v2);
+    vector<vector<int> > grupos_homogeneos;
+    do {
+        for(int i: v) {
+            if(i < pivote || i > pivote) {
+                heterogeneo.push_back(i);
+            } else {
+                homogeneo.push_back(i);
+            }
+        }
+    }while(heterogeneo.size() > homogeneo.size());
 
-        pair<int,int> result;
-        //Recomponemos la solucion
-        result.first = (m1.first > m2.first) ? result.first = m1.first : result.first = m2.first;
-        result.second = (m1.second < m2.second) ? result.second = m1.second : result.second = m2.second;
 
-        return result;
-    }
+
 }
 
 void sintaxis() {
@@ -57,18 +55,18 @@ int main(int argc, char * argv[]) {
     inicializar(v,tam);
 
     high_resolution_clock::time_point start,//punto de inicio
-    end; //punto de fin
+                          end; //punto de fin
     duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
 
     start = high_resolution_clock::now(); //iniciamos el punto de inicio
-        pair<int,int> p = max_min(v);
+    moda(v);
     end = high_resolution_clock::now(); //anotamos el punto de de fin
-        
+
     //el tiempo transcurrido es
     tiempo_transcurrido += duration_cast<duration<double> >(end - start);
-    
+
     // Mostramos resultados
-    cout << "MAX: " << p.first << " , MIN: " << p.second << endl;
+    //cout << "MAX: " << p.first << " , MIN: " << p.second << endl;
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
 
 }
