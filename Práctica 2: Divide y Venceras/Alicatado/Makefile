@@ -6,18 +6,18 @@ CXX = g++ -g
 CPPFLAGS = -Wall -g  -I$(INC) -c
 
 
-all: $(BIN)/testimagen_paleta
+all: $(BIN)/alicatar
 
 # ************ Generación de documentación ******************
 documentacion:
 	doxygen doc/doxys/Doxyfile
 
 # ************ Compilación de módulos ************
-$(BIN)/testimagen_paleta: $(OBJ)/testimagen_paleta.o $(OBJ)/imagen.o $(OBJ)/imagenES.o 
-	$(CXX) -o $(BIN)/testimagen_paleta  $(OBJ)/testimagen_paleta.o $(OBJ)/imagen.o $(OBJ)/imagenES.o 
+$(BIN)/alicatar: $(OBJ)/alicatar.o $(OBJ)/imagen.o $(OBJ)/imagenES.o 
+	$(CXX) -o $(BIN)/alicatar  $(OBJ)/alicatar.o $(OBJ)/imagen.o $(OBJ)/imagenES.o 
 
-$(OBJ)/testimagen_paleta.o: $(SRC)/testimagen_paleta.cpp $(INC)/imagenES.h $(INC)/imagen.h $(INC)/paleta.h 
-	$(CXX) $(CPPFLAGS) $(SRC)/testimagen_paleta.cpp -o $(OBJ)/testimagen_paleta.o
+$(OBJ)/alicatar.o: $(SRC)/alicatar.cpp $(INC)/imagenES.h $(INC)/imagen.h $(INC)/paleta.h 
+	$(CXX) $(CPPFLAGS) $(SRC)/alicatar.cpp -o $(OBJ)/alicatar.o
 $(OBJ)/imagen.o: $(SRC)/imagen.cpp $(INC)/imagen.h $(INC)/imagenES.h
 	$(CXX) $(CPPFLAGS) $(SRC)/imagen.cpp -o $(OBJ)/imagen.o
 		
