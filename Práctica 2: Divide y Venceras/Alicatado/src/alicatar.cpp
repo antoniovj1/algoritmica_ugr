@@ -4,8 +4,7 @@
 #include <utility>
 #include <vector>
 #include <chrono>   // Recursos para medir tiempos
-#include <math.h>       /* log2 */
-
+#include <iomanip>
 
 using namespace std::chrono;
 
@@ -41,14 +40,16 @@ void alicatar(vector<vector<int> > &suelo, pair<int,int> desague, pair<int,int> 
         suelo[desague.first][desague.second] = -1 ;
     }
 
+    //CASO BASE
     if(lado == 2) {
-
         for(int i=0; i < 2; i++)
             for(int j=0; j <2 ; j++ )
                 if(suelo.at(i+x).at(j+y) == 0)
                     suelo.at(i+x).at(j+y) = count;
 
         return;
+
+        //LLAMADAS RECURSIVAS
     } else {
 
         int cua = cuadrante(x,y,lado,desague);
@@ -138,34 +139,49 @@ void pintar_suelo(const Paleta &P,const vector<vector<int> > &suelo,Imagen &I) {
     }
 }
 
-bool valido(int n){
+bool valido(int n) {
     return (n>1 && ((n & (n-1)) == 0));
+}
+
+void sintaxis() {
+    cerr << "Caso 1: Los parametros son: " << endl;
+    cerr << "\t1. Tamaño suelo (2^n)\n" << endl;
+
+    cerr << "Caso 2: Los parametros son: " << endl;
+    cerr << "\t1. Tamaño suelo (2^n)" << endl;
+    cerr << "\t2. Fila desague" << endl;
+    cerr << "\t3. Columna desague" << endl;
+    cerr << "\t4. Paleta" << endl;
+    cerr << "\t5. Imagen de salida" << endl;
+
+    exit(EXIT_FAILURE);
 }
 
 int main(int argc, char *argv[]) {
 
-    if ((argc != 2 && argc != 3) || !valido(atoi(argv[1]))) {
-        cout << "Caso 1: Los parametros son: " << endl;
-        cout << "1. Tamaño suelo (2^n)" << endl;
+    if ((argc != 2 && argc != 6) || !valido(atoi(argv[1]))) {
+        sintaxis();
+    } else if (argc == 6) {
 
-        cout << "Caso 2: Los parametros son: " << endl;
-        cout << "1. Tamaño suelo (2^n)" << endl;
-        cout << "2. Paleta" << endl;
+        if(valido(atoi(argv[1]))) {
+            int tam = atoi(argv[1]);
 
-        exit(EXIT_FAILURE);
+            if(atoi(argv[2]) > tam-1 || atoi(argv[2]) < 0 || atoi(argv[3]) > tam-1 || atoi(argv[3]) < 0 ) {
+                sintaxis();
+            }
+        }
     }
 
-
     int tam = atoi(argv[1]);
-
     vector<vector<int> > suelo(tam);
+
     for ( int i = 0 ; i < tam ; i++ )
         suelo.at(i).resize(tam);
 
 
-    pair<int,int> desague(0,0);
-
     if(argc == 2) {
+        pair<int,int> desague(0,0);
+
         high_resolution_clock::time_point start,//punto de inicio
                               end; //punto de fin
         duration<double> tiempo_transcurrido;  //objeto para medir la duracion de end 						   // y start
@@ -183,20 +199,31 @@ int main(int argc, char *argv[]) {
 
     } else {
 
+        pair<int,int> desague(atoi(argv[2]),atoi(argv[3]));
+
         alicatar(suelo,desague,pair<int,int>(0,0));
 
-        Imagen I(256, 256);
+        Imagen I(1024, 1024);
         Paleta P;
-        ifstream f(argv[1]);
+        ifstream f(argv[4]);
 
         if (!f) {
-            cout << "No puedo abrir " << argv[2] << endl;
+            cout << "No puedo abrir " << argv[4] << endl;
             return 0;
         }
 
         f >> P;
 
+        for(int i = 0; i < tam; i++) {
+            for(int j = 0 ; j < tam; j++) {
+                cout << setw(4) << suelo[i][j];
+            }
+            cout << endl;
+        }
+        cout << endl;
+
         pintar_suelo(P,suelo,I);
-        I.EscribirImagen("paleta.ppm");
+        I.EscribirImagen(argv[5]);
     }
+
 }
