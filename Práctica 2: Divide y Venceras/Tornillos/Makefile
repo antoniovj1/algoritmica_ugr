@@ -6,20 +6,19 @@ CXX = g++
 CPPFLAGS = -Wall -g  -I$(INC) -c
 
 
-all: $(BIN)/pruebapermutacion.out
+all: $(BIN)/pruebatornillos
 
 # ************ Generación de documentación ******************
 documentacion:
 	doxygen doc/doxys/Doxyfile
 
 # ************ Compilación de módulos ************
-$(BIN)/pruebapermutacion: $(OBJ)/permutacion.o $(OBJ)/pruebapermutacion.o
-	$(CXX) -o $(BIN)/pruebapermutacion  $(OBJ)/pruebapermutacion.o $(OBJ)/permutacion.o
+$(BIN)/pruebatornillos: $(OBJ)/pruebatornillos.o
+	$(CXX) -o $(BIN)/pruebatornillos  $(OBJ)/pruebatornillos.o 
 
-$(OBJ)/pruebapermutacion.o: $(SRC)/pruebapermutacion.cpp $(INC)/permutacion.h
-	$(CXX) $(CPPFLAGS) $(SRC)/pruebapermutacion.cpp -o $(OBJ)/pruebapermutacion.o
-$(OBJ)/permutacion.o: $(SRC)/permutacion.cpp $(INC)/permutacion.h
-	$(CXX) $(CPPFLAGS) $(SRC)/permutacion.cpp -o $(OBJ)/permutacion.o
+$(OBJ)/pruebatornillos.o: $(SRC)/pruebatornillos.cpp 
+	$(CXX) $(CPPFLAGS) $(SRC)/pruebatornillos.cpp -o $(OBJ)/pruebatornillos.o
+
 
 # ************ Limpieza ************
 clean :
