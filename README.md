@@ -1,6 +1,6 @@
 # Prácticas Algorítmica UGR
 
-### 1. [Práctica 1: Eficiencia](https://github.com/antoniovj1/algoritmica_ugr/tree/master/Pr%C3%A1ctica%201:%20Eficiencia)
+### 1. [Práctica 1: Eficiencia](Pr%C3%A1ctica%201:%20Eficiencia)
 
 
 ___
