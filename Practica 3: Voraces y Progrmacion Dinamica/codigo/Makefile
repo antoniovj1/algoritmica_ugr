@@ -6,36 +6,36 @@ CXX = g++
 CPPFLAGS = -Wall -g  -I$(INC) -c -std=c++11
 
 
-all: $(BIN)/cifra_voraz $(BIN)/suma_voraz $(BIN)/suma_dinamica
+all: $(BIN)/voraz_cifras $(BIN)/voraz_maximo $(BIN)/PD_maximo $(BIN)/PD_cifras
 
 # ************ Generación de documentación ******************
 documentacion:
 	doxygen doc/doxys/Doxyfile
 
 # ************ Compilación de módulos ************
-$(BIN)/cifra_voraz: $(OBJ)/cifra_voraz.o
-	$(CXX) -o $(BIN)/cifra_voraz  $(OBJ)/cifra_voraz.o
+$(BIN)/voraz_cifras: $(OBJ)/voraz_cifras.o
+	$(CXX) -o $(BIN)/voraz_cifras  $(OBJ)/voraz_cifras.o
 
-$(OBJ)/cifra_voraz.o: $(SRC)/cifra_voraz.cpp
-	$(CXX) $(CPPFLAGS) $(SRC)/cifra_voraz.cpp -o $(OBJ)/cifra_voraz.o
+$(OBJ)/voraz_cifras.o: $(SRC)/voraz_cifras.cpp
+	$(CXX) $(CPPFLAGS) $(SRC)/voraz_cifras.cpp -o $(OBJ)/voraz_cifras.o
 
-$(BIN)/suma_voraz: $(OBJ)/suma_voraz.o
-	$(CXX) -o $(BIN)/suma_voraz  $(OBJ)/suma_voraz.o
+$(BIN)/voraz_maximo: $(OBJ)/voraz_maximo.o
+	$(CXX) -o $(BIN)/voraz_maximo  $(OBJ)/voraz_maximo.o
 
-$(OBJ)/suma_voraz.o: $(SRC)/suma_voraz.cpp
-	$(CXX) $(CPPFLAGS) $(SRC)/suma_voraz.cpp -o $(OBJ)/suma_voraz.o
+$(OBJ)/voraz_maximo.o: $(SRC)/voraz_maximo.cpp
+	$(CXX) $(CPPFLAGS) $(SRC)/voraz_maximo.cpp -o $(OBJ)/voraz_maximo.o
 
-$(BIN)/suma_dinamica: $(OBJ)/suma_dinamica.o
-	$(CXX) -o $(BIN)/suma_dinamica  $(OBJ)/suma_dinamica.o
+$(BIN)/PD_maximo: $(OBJ)/PD_maximo.o
+	$(CXX) -o $(BIN)/PD_maximo  $(OBJ)/PD_maximo.o
 
-$(OBJ)/suma_dinamica.o: $(SRC)/suma_dinamica.cpp
-	$(CXX) $(CPPFLAGS) $(SRC)/suma_dinamica.cpp -o $(OBJ)/suma_dinamica.o
+$(OBJ)/PD_maximo.o: $(SRC)/PD_maximo.cpp
+	$(CXX) $(CPPFLAGS) $(SRC)/PD_maximo.cpp -o $(OBJ)/PD_maximo.o
 
-$(BIN)/cifra_dinamica: $(OBJ)/cifra_dinamica.o
-	$(CXX) -o $(BIN)/cifra_dinamica  $(OBJ)/cifra_dinamica.o
+$(BIN)/PD_cifras: $(OBJ)/PD_cifras.o
+	$(CXX) -o $(BIN)/PD_cifras  $(OBJ)/PD_cifras.o
 
-$(OBJ)/cifra_dinamica.o: $(SRC)/cifra_dinamica.cpp
-	$(CXX) $(CPPFLAGS) $(SRC)/cifra_dinamica.cpp -o $(OBJ)/cifra_dinamica.o
+$(OBJ)/PD_cifras.o: $(SRC)/PD_cifras.cpp
+	$(CXX) $(CPPFLAGS) $(SRC)/PD_cifras.cpp -o $(OBJ)/PD_cifras.o
 
 # ************ Limpieza ************
 clean :

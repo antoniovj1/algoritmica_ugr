@@ -21,12 +21,12 @@ end
 @ incremento = 25000
 @ i = $inicio
 
-echo > suma_voraz.dat
+echo > voraz_maximo.dat
 
 while ( $i <= $fin )
   echo Ejecución tam = $i
   echo  "      Suma Voraz"
-  echo `./bin/suma_voraz $i ` >> suma_voraz.dat
+  echo `./bin/voraz_maximo $i ` >> voraz_maximo.dat
 
 @ i+= $incremento
 end
@@ -36,12 +36,12 @@ end
 @ incremento = 250
 @ i = $inicio
 
-echo > suma_dinamica.dat
+echo > PD_maximo.dat
 
 while ( $i <= $fin )
   echo Ejecución tam = $i
   echo  "      Suma Dinamica"
-  echo `./bin/suma_dinamica $i ` >> suma_dinamica.dat
+  echo `./bin/PD_maximo $i ` >> PD_maximo.dat
 
 @ i+= $incremento
 end
