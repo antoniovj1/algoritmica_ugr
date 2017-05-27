@@ -8,7 +8,7 @@ CPPFLAGS2 = -Wall -pg
 
 HDRS = $(INC)/*.h
 
-all:  $(BIN)/prueba_APermutacion $(BIN)/Voraz
+all:  $(BIN)/prueba_APermutacion $(BIN)/Voraz $(BIN)/Bactb
 
 # ************ Generación de documentación ******************
 documentacion:
@@ -19,15 +19,18 @@ documentacion:
 $(BIN)/Voraz: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Voraz.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@ 
 
+$(BIN)/Bactb: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactb.o $(OBJ)/Apermutacion.o
+	$(CXX) $(CPPFLAGS2) $^ -o $@
+
+$(BIN)/prueba_APermutacion: $(OBJ)/Apermutacion.o $(OBJ)/prueba_APermutacion.o
+	$(CXX) $(CPPFLAGS2) $^ -o $@ 
+
 $(OBJ)/Voraz.o: $(SRC)/Voraz.cpp $(HDRS)
 	$(CXX) $(CPPFLAGS) $< -o $@
 $(OBJ)/MatrizDiscrepancias.o: $(SRC)/MatrizDiscrepancias.cpp $(HDRS)
 	$(CXX) $(CPPFLAGS) $< -o $@
-
-	
-$(BIN)/prueba_APermutacion: $(OBJ)/Apermutacion.o $(OBJ)/prueba_APermutacion.o
-	$(CXX) $(CPPFLAGS2) $^ -o $@ 
-
+$(OBJ)/Bactb.o: $(SRC)/BacktrackingBasico.cpp $(HDRS)
+	$(CXX) $(CPPFLAGS) $< -o $@
 $(OBJ)/prueba_APermutacion.o: $(SRC)/prueba_APermutacion.cpp $(HDRS)
 	$(CXX) $(CPPFLAGS) $< -o $@
 $(OBJ)/Apermutacion.o: $(SRC)/Apermutacion.cpp $(HDRS)
