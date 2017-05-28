@@ -1,6 +1,6 @@
 # Práctica 4: Backtracking y Branch & Bound
 
-### 1. Busca Amistades
+### 1. Descripción del problema: Busca Amistades
 
 La empresa Friendship se ocupa de encontrar amistades formadas entre dos personas. Con
 tal objetivo tenemos un conjunto de personas (con número par de personas) y tenemos que
@@ -53,3 +53,37 @@ inf 24 25 34 19 25
 Como se puede observar la discrepancia sobre sí mismo se ha puesto a infinito (inf).
 Nuestro objetivo es obtener las mejores parejas de individuos que minimicen la discrepancia
 total. 
+
+
+### 2. Solución voraz
+En primer lugar este problema vamos a resolverlo con la técnica Voraz. Una función de
+selección trivial sería ir recorriendo los individuos y buscar entre los libres aquel que
+muestre menor discrepancia con él. 
+
+```
+prompt% bin/friendship_voraz datos/group_small.txt
+```
+
+### 3. Solucion Backtracking
+#### 3.1 Sin poda
+Se aplica backtracking cuando encuentra una solución (obtiene todos los
+emparejamientos).
+
+#### 3.2 Con poda
+Se aplica backtracking cuando la solución parcial tiene una discrepancia estimada
+mayor que la mejor solución actual.
+```
+prompt% bin/friendship_backtracking datos/group_small.txt
+```
+
+
+### 4. Branch & Bound 
+También vamos a resolver este problema usando la técnica Branch & Bound. Al igual que
+backtracking usará un árbol permutacional. Lo novedoso con esta técnica es que se ramifica
+por el nodo que tenga una discrepancia estimada menor hasta el momento. Además se usa
+una cota superior y una cota inferior de la solución que se puede llegar a obtener a partir de
+un nodo. 
+
+```
+prompt% bin/friendship_branchbound datos/group_small.tx
+```
