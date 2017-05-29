@@ -3,12 +3,12 @@ INC = include
 OBJ = obj
 BIN = bin
 CXX = g++
-CPPFLAGS = -Wall -pg  -I$(INC) -c
-CPPFLAGS2 = -Wall -pg 
+CPPFLAGS =  -pg  -I$(INC) -c
+CPPFLAGS2 =  -pg 
 
 HDRS = $(INC)/*.h
 
-all:  $(BIN)/prueba_APermutacion $(BIN)/Voraz $(BIN)/Bactb $(BIN)/Bactp
+all:  $(BIN)/prueba_APermutacion $(BIN)/Voraz $(BIN)/Bactb $(BIN)/Bactp $(BIN)/BranchAndBound
 
 # ************ Generación de documentación ******************
 documentacion:
@@ -23,6 +23,9 @@ $(BIN)/Bactb: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactb.o $(OBJ)/Apermutacion.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@
 
 $(BIN)/Bactp: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactp.o $(OBJ)/Apermutacion.o
+	$(CXX) $(CPPFLAGS2) $^ -o $@
+
+$(BIN)/BranchAndBound: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/BranchAndBound.o $(OBJ)/Apermutacion.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@
 
 $(BIN)/prueba_APermutacion: $(OBJ)/Apermutacion.o $(OBJ)/prueba_APermutacion.o
@@ -40,7 +43,8 @@ $(OBJ)/prueba_APermutacion.o: $(SRC)/prueba_APermutacion.cpp $(HDRS)
 	$(CXX) $(CPPFLAGS) $< -o $@
 $(OBJ)/Apermutacion.o: $(SRC)/Apermutacion.cpp $(HDRS)
 	$(CXX) $(CPPFLAGS) $< -o $@
-
+$(OBJ)/BranchAndBound.o: $(SRC)/BranchAndBound.cpp $(HDRS)
+	$(CXX) $(CPPFLAGS) $< -o $@
 # ************ Limpieza ************
 clean :
 	-rm $(OBJ)/*.o $(SRC)/*~ $(INC)/*~ ./*~
