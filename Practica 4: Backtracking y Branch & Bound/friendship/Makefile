@@ -8,7 +8,7 @@ CPPFLAGS2 =  -pg
 
 HDRS = $(INC)/*.h
 
-all:  $(BIN)/prueba_APermutacion $(BIN)/Voraz $(BIN)/Bactb $(BIN)/Bactp $(BIN)/BranchAndBound
+all:  $(BIN)/prueba_APermutacion $(BIN)/friendship_voraz $(BIN)/friendship_backtracking_sin $(BIN)/friendship_backtracking $(BIN)/friendship_branchbound
 
 # ************ Generación de documentación ******************
 documentacion:
@@ -16,16 +16,16 @@ documentacion:
 
 # ************ Compilación de módulos ************
 
-$(BIN)/Voraz: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Voraz.o
+$(BIN)/friendship_voraz: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Voraz.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@ 
 
-$(BIN)/Bactb: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactb.o $(OBJ)/Apermutacion.o
+$(BIN)/friendship_backtracking_sin: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactb.o $(OBJ)/Apermutacion.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@
 
-$(BIN)/Bactp: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactp.o $(OBJ)/Apermutacion.o
+$(BIN)/friendship_backtracking: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/Bactp.o $(OBJ)/Apermutacion.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@
 
-$(BIN)/BranchAndBound: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/BranchAndBound.o $(OBJ)/Apermutacion.o
+$(BIN)/friendship_branchbound: $(OBJ)/MatrizDiscrepancias.o $(OBJ)/BranchAndBound.o $(OBJ)/Apermutacion.o
 	$(CXX) $(CPPFLAGS2) $^ -o $@
 
 $(BIN)/prueba_APermutacion: $(OBJ)/Apermutacion.o $(OBJ)/prueba_APermutacion.o

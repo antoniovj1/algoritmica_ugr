@@ -233,7 +233,7 @@ void printSolucion(const Apermutacion &P) {
 
 void sintaxis() {
     cerr << "Sintaxis:" << endl;
-    cerr << "  ./dactualb archivo_gustos.txt" << endl;
+    cerr << "  ./branchandbound archivo_gustos.txt" << endl;
     exit(EXIT_FAILURE);
 }
 
