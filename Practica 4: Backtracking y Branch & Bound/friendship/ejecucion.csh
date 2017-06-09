@@ -1,7 +1,7 @@
 #!/bin/csh
 @ inicio = 10
-@ fin = 1500
-@ incremento = 10
+@ fin = 1000
+@ incremento = 20
 @ i = $inicio
 
 
@@ -45,7 +45,7 @@ echo > friendship_backtracking.dat
 
 while ( $i <= $fin )
   echo Ejecución tam = $i
-  echo  "      Suma Dinamica"
+  echo  "      friendship_backtracking_con_poda"
   echo `./bin/friendship_backtracking $i ` >> friendship_backtracking.dat
 
 @ i+= $incremento
@@ -63,7 +63,7 @@ echo > friendship_branchbound.dat
 
 while ( $i <= $fin )
   echo Ejecución tam = $i
-  echo  "      cifra Dinamica"
+  echo  "      friendship_branchbounda"
   echo `./bin/friendship_branchbound $i ` >> friendship_branchbound.dat
 
 @ i+= $incremento
