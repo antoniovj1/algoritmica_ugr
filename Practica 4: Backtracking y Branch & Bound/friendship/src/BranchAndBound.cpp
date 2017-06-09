@@ -242,7 +242,7 @@ void sintaxis() {
 }
 
 int main(int argc, char *argv[]) {
-    /**/
+    /**
     //PARA MEDIR TIEMPOS
 
     if (argc!=2)
@@ -266,9 +266,10 @@ int main(int argc, char *argv[]) {
     tiempo_transcurrido = duration_cast<duration<double> >(end - start);
 
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
-    /**/
+    **/
 
-   /* if (argc != 2) {
+   /**/
+    if (argc != 2) {
         sintaxis();
     }
 
@@ -283,7 +284,8 @@ int main(int argc, char *argv[]) {
 
     cout << "\nDiscrepancia con Branch & Bound: " << discrepancia << endl << endl;
 
-    printSolucion(P);*/
+    printSolucion(P);
+    /**/
 
 }
 

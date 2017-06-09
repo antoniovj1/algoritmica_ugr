@@ -74,7 +74,7 @@ void sintaxis() {
 
 int main(int argc, char *argv[]) {
 
-    /**/
+    /**
     //PARA MEDIR TIEMPOS
 
     if (argc!=2)
@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
     tiempo_transcurrido = duration_cast<duration<double> >(end - start);
 
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
+    **/
     /**/
-    /*
 
     if (argc != 2) {
         sintaxis();
@@ -110,13 +110,13 @@ int main(int argc, char *argv[]) {
     vector <vector<int>> matriz = matrizDiscrepancias(f);
     Apermutacion P(matriz.size());
 
-    cout << matriz << endl;
+    //cout << matriz << endl;
 
     int discrepancia = asignParejas(matriz.size(), P, matriz);
 
     cout << "\nDiscrepancia con Backtraking: " << discrepancia << endl << endl;
     printSolucion(P);
-    */
+    /**/
 
 }
 

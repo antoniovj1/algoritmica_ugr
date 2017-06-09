@@ -64,7 +64,7 @@ void sintaxis() {
 
 int main(int argc, char *argv[]) {
 
-    /**/
+    /**
     //PARA MEDIR TIEMPOS
 
     if (argc!=2)
@@ -86,17 +86,18 @@ int main(int argc, char *argv[]) {
     tiempo_transcurrido = duration_cast<duration<double> >(end - start);
 
     cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
-    /**/
+    **/
 
-    /* if(argc != 2){
+    /* */
+    if(argc != 2){
          sintaxis();
      }
      ifstream f(argv[1]);
      vector <vector<int>> matriz = matrizDiscrepancias(f);
 
-     cout << matriz;
+     //cout << matriz;
 
-     vector <pair<int, int>> sol = voraz(matriz);
+     vector <pair<int, int>> sol = asignParejas(matriz);
 
      int disc = 0;
      for (int k = 0; k < sol.size(); ++k) {
@@ -107,6 +108,7 @@ int main(int argc, char *argv[]) {
          cout << "Persona " << sol[k].first + 1 << ": con persona " << sol[k].second + 1 << endl;
      }
 
-     cout << "Discrepancia voraz total: " << disc << endl;*/
+     cout << "Discrepancia voraz total: " << disc << endl;
+     /**/
 
 }
