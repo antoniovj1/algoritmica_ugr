@@ -50,6 +50,51 @@ vector <vector<int>> matrizDiscrepancias(ifstream &f) {
 }
 
 /************************************/
+vector <vector<int>> matrizDiscrepanciasTiempos(int tam) {
+    int car = 10; // Solo cambia el numero de usuarios
+    vector <vector<int>> matriz;
+
+    int i, j, val;
+    i = j = val = 0;
+
+    while (i < tam) {
+        j = 0;
+        vector<int> carInd;
+        while (j < car) {
+            val = rand()%10+1;
+            carInd.push_back(val);
+            j++;
+        }
+        matriz.push_back(carInd);
+        i++;
+    }
+
+    vector <vector<int>> mDisc(tam);
+    for (i = 0; i < mDisc.size(); i++) {
+        mDisc[i].resize(tam);
+    }
+
+    int disc;
+    int max = std::numeric_limits<int>::max();
+
+    for (i = 0; i < mDisc.size(); i++) {
+        for (j = 0; j < mDisc[i].size(); j++) {
+            if (i == j) {
+                mDisc[i][j] = max;
+            } else {
+                disc = 0;
+                for (int k = 0; k < car; k++) {
+                    disc += abs(matriz[i][k] - matriz[j][k]);
+                }
+                mDisc[i][j] = disc;
+            }
+        }
+    }
+
+    return mDisc;
+}
+
+/************************************/
 
 ostream &operator<<(ostream &os, const vector <vector<int>> &obj) {
     int max = std::numeric_limits<int>::max();

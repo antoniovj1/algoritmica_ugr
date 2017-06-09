@@ -1,14 +1,13 @@
-//
-// Created by antonio on 25/05/17.
-//
-
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <limits>
 #include <algorithm>
-#include <MatrizDiscrepancias.h>
+#include <chrono>
 
+#include "MatrizDiscrepancias.h"
+
+using namespace std::chrono;
 using namespace std;
 
 bool contains(vector<int> v, int x) {
@@ -28,7 +27,7 @@ int buscarPareja(int x, vector <pair<int, int>> v) {
     return -1;
 }
 
-vector <pair<int, int>> voraz(vector <vector<int>> matriz) {
+vector <pair<int, int>> asignParejas(vector <vector<int>> matriz) {
     vector <pair<int, int>> sol;
     vector<int> selec;
 
@@ -65,25 +64,49 @@ void sintaxis() {
 
 int main(int argc, char *argv[]) {
 
-    if(argc != 2){
+    /**/
+    //PARA MEDIR TIEMPOS
+
+    if (argc!=2)
         sintaxis();
-    }
-    ifstream f(argv[1]);
-    vector <vector<int>> matriz = matrizDiscrepancias(f);
 
-    cout << matriz;
+    int tam = atoi(argv[1]);
 
-    vector <pair<int, int>> sol = voraz(matriz);
+    vector <vector<int>> matriz = matrizDiscrepanciasTiempos(tam);
 
-    int disc = 0;
-    for (int k = 0; k < sol.size(); ++k) {
-        disc += matriz[sol[k].first][sol[k].second];
-    }
+    high_resolution_clock::time_point start, end;
+    duration<double> tiempo_transcurrido;
 
-    for (int k = 0; k < sol.size(); ++k) {
-        cout << "Persona " << sol[k].first + 1 << ": con persona " << sol[k].second + 1 << endl;
-    }
+    start = high_resolution_clock::now();
 
-    cout << "Discrepancia voraz total: " << disc << endl;
+    vector <pair<int, int>> sol = asignParejas(matriz);
+
+    end = high_resolution_clock::now();
+
+    tiempo_transcurrido = duration_cast<duration<double> >(end - start);
+
+    cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
+    /**/
+
+    /* if(argc != 2){
+         sintaxis();
+     }
+     ifstream f(argv[1]);
+     vector <vector<int>> matriz = matrizDiscrepancias(f);
+
+     cout << matriz;
+
+     vector <pair<int, int>> sol = voraz(matriz);
+
+     int disc = 0;
+     for (int k = 0; k < sol.size(); ++k) {
+         disc += matriz[sol[k].first][sol[k].second];
+     }
+
+     for (int k = 0; k < sol.size(); ++k) {
+         cout << "Persona " << sol[k].first + 1 << ": con persona " << sol[k].second + 1 << endl;
+     }
+
+     cout << "Discrepancia voraz total: " << disc << endl;*/
 
 }

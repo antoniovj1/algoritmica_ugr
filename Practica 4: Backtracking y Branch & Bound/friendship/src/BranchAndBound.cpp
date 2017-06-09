@@ -5,9 +5,13 @@
 #include <iomanip>
 #include <algorithm>
 #include <queue>
+#include <chrono>
+
 #include "Apermutacion.h"
 #include "MatrizDiscrepancias.h"
 
+
+using namespace std::chrono;
 
 class nodo {
   public:
@@ -211,9 +215,9 @@ int asignParejas(int n, Apermutacion &ab, const vector <vector<int>> &D) {
 
     } while (!pq.empty());
 
-    int total=ab.NumeroSecuenciasPosibles();
+    /*int total=ab.NumeroSecuenciasPosibles();
     cout<<"Numero de nodos recorridos "<<nodos_recorridos<< " total nodos "
-        <<total<<" Porcentaje "<<(nodos_recorridos/(double)total)*100.0<<endl;
+        <<total<<" Porcentaje "<<(nodos_recorridos/(double)total)*100.0<<endl;*/
     return best_discrepancia;
 }
 
@@ -238,8 +242,33 @@ void sintaxis() {
 }
 
 int main(int argc, char *argv[]) {
+    /**/
+    //PARA MEDIR TIEMPOS
 
-    if (argc != 2) {
+    if (argc!=2)
+        sintaxis();
+
+    int tam = atoi(argv[1]);   
+  
+    vector <vector<int>> matriz = matrizDiscrepanciasTiempos(tam);
+    Apermutacion P(matriz.size());
+
+
+    high_resolution_clock::time_point start, end;
+    duration<double> tiempo_transcurrido;
+
+    start = high_resolution_clock::now();
+
+    int discrepancia = asignParejas(matriz.size(), P, matriz);
+
+    end = high_resolution_clock::now();
+
+    tiempo_transcurrido = duration_cast<duration<double> >(end - start);
+
+    cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
+    /**/
+
+   /* if (argc != 2) {
         sintaxis();
     }
 
@@ -254,7 +283,7 @@ int main(int argc, char *argv[]) {
 
     cout << "\nDiscrepancia con Branch & Bound: " << discrepancia << endl << endl;
 
-    printSolucion(P);
+    printSolucion(P);*/
 
 }
 

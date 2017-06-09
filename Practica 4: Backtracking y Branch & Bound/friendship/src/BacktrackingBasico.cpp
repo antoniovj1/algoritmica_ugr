@@ -3,8 +3,13 @@
 #include <vector>
 #include <limits>
 #include <iomanip>
+#include <chrono>
+
 #include "Apermutacion.h"
 #include "MatrizDiscrepancias.h"
+
+
+using namespace std::chrono;
 
 
 int Suma_Discrepancias(const Apermutacion &P, const vector <vector<int>> &B) {
@@ -44,9 +49,9 @@ int asignParejas(int n, Apermutacion &ab, const vector <vector<int>> &D) {
 
     int total = P.NumeroSecuenciasPosibles();
 
-    cout << "Numero de nodos recorridos " << nodos_recorridos
-         << " ,total nodos " << total
-         << " ,Porcentaje " << (nodos_recorridos / (double) total) * 100.0 << endl;
+    /* cout << "Numero de nodos recorridos " << nodos_recorridos
+          << " ,total nodos " << total
+          << " ,Porcentaje " << (nodos_recorridos / (double) total) * 100.0 << endl;*/
 
     return best_discrepancia;
 }
@@ -69,6 +74,33 @@ void sintaxis() {
 
 int main(int argc, char *argv[]) {
 
+    /**/
+    //PARA MEDIR TIEMPOS
+
+    if (argc!=2)
+        sintaxis();
+
+    int tam = atoi(argv[1]);   
+  
+    vector <vector<int>> matriz = matrizDiscrepanciasTiempos(tam);
+    Apermutacion P(matriz.size());
+
+
+    high_resolution_clock::time_point start, end;
+    duration<double> tiempo_transcurrido;
+
+    start = high_resolution_clock::now();
+
+    int discrepancia = asignParejas(matriz.size(), P, matriz);
+
+    end = high_resolution_clock::now();
+
+    tiempo_transcurrido = duration_cast<duration<double> >(end - start);
+
+    cout << tam << "\t" <<tiempo_transcurrido.count() << endl;
+    /**/
+    /*
+
     if (argc != 2) {
         sintaxis();
     }
@@ -84,9 +116,10 @@ int main(int argc, char *argv[]) {
 
     cout << "\nDiscrepancia con Backtraking: " << discrepancia << endl << endl;
     printSolucion(P);
+    */
 
 }
-  
-  
-   
-  
+
+
+
+
