@@ -38,14 +38,10 @@ int Suma_Discrepancias(const Apermutacion &P, const vector <vector<int>> &B) {
     int i = 0;
     Apermutacion::const_iterator it;
 
-    cout << P << endl;
-    cout << B << endl;
-
     for (it = P.begin(); it != P.end(); ++it) {
-        if(i == *it-1){
-            return numeric_limits<int>::max();
+        if( i != *it - 1 && i + 1 < *it) {
+            suma += B[i][*it - 1]*2;
         }
-        suma += B[i][*it - 1];
         ++i;
     }
 
@@ -69,23 +65,6 @@ int buscarPareja(int x, vector <pair<int, int>> v) {
     return -1;
 }
 
-vector<vector<int>> obtenerNoAsignados(const vector<vector<int>> &O, const Apermutacion &A) {
-    vector<vector<int>> noAsignados;
-    vector<int> asignados;
-    asignados.push_back(A.GetLevel());
-    Apermutacion::const_iterator it;
-    for(it = A.begin(); it != A.end(); ++it) {
-        asignados.push_back(*it-1);
-    }
-
-    for(int i = 0 ; i < O.size(); i++) {
-        if(!contains(asignados,i)) {
-            noAsignados.push_back(O[i]);
-        }
-    }
-
-    return noAsignados;
-}
 
 vector<int> getNoAsignados(int i, vector<int> v) {
     vector<int> noAsignados;
@@ -103,6 +82,7 @@ int cotaSuperior(const vector<vector<int>> &matriz, vector<int> asignados) {
     vector<int> noAsignados= getNoAsignados(matriz.size()-1,asignados);
     int max = numeric_limits<int>::max();
     int per1, per2, min;
+
 
     for (int i: noAsignados) {
         per1=i;
@@ -134,20 +114,19 @@ int cotaSuperior(const vector<vector<int>> &matriz, vector<int> asignados) {
 
 int cotaInferior(const vector<vector<int>> &matriz, vector<int> asignados) {
     vector <pair<int, int>> sol;
-
     vector<int> noAsignados = getNoAsignados(matriz.size()-1,asignados);
-
+ 
     int max = numeric_limits<int>::max();
     int per1, per2, min;
 
-    for (int i: noAsignados) {
+    for (int i :noAsignados) {
         per1 = i;
         min = max;
 
-        for (int j: noAsignados) {
+        for (int j  :noAsignados) {
             if (matriz[per1][j] < min) {
-                min = matriz[per1][j];
                 per2 = j;
+                min = matriz[per1][per2];
             }
         }
         sol.push_back(make_pair(per1, per2));
@@ -166,7 +145,8 @@ vector<int> obtenerAsignaciones(const Apermutacion &P) {
     Apermutacion::const_iterator it;
 
     for (it = P.begin(); it != P.end(); ++it) {
-        asignados.push_back(*it-1);
+        if ( *it != 0 )
+            asignados.push_back(*it-1);
     }
 
     int i = P.GetLevel();
@@ -175,87 +155,68 @@ vector<int> obtenerAsignaciones(const Apermutacion &P) {
         asignados.push_back(i);
         --i;
     }
-    sort(asignados.begin(), asignados.end());
 
     return asignados;
 }
 
 int asignParejas(int n, Apermutacion &ab, const vector <vector<int>> &D) {
     Apermutacion P(n);
-    Apermutacion mejor_permutacion(n);
+
+    int dactual = 0;
+    int best_discrepancia = numeric_limits<int>::max();
+
+    vector<int> aux;
     vector<int> asignados(0);
+
     int CI = cotaInferior(D,asignados);
     int CS = cotaSuperior(D,asignados);
     int C = CS;
     int DE = (CI+CS)/2;
-    int dactual = 0;
-    int best_discrepancia = numeric_limits<int>::max();
+
     int nodos_recorridos = 0;
-    bool seguir = true;
     priority_queue<nodo> pq;
 
-    do {
-        asignados = obtenerAsignaciones(P);
-        dactual = Suma_Discrepancias(P,D)*2;
-        CI = dactual + cotaInferior(D,asignados);
-        if(CI <= C ) { //Si lo mejor es peor que la cota podamos
-            CS = dactual + cotaSuperior(D,asignados);
+    nodo a(dactual,CI,DE,CS,P);
+    pq.push(a);
 
-            DE = (CI+CS)/2;
-            C = (C < CS)?C:CS;
-            nodo a(dactual,CI,DE,CS,P);
-            pq.push(a); //Aniadimos el nodo a la cola
+    do {
+        nodos_recorridos++;
+        nodo a = pq.top();  pq.pop();
+
+        vector<vector<int> > hijos = a.ab.GeneraHijos();
+
+        for (int i=0; i< (int)hijos.size(); i++) {
+
+            Apermutacion H (hijos[i],a.ab.GetLevel()+1);
+
+            dactual=Suma_Discrepancias(H,D);
+            aux = obtenerAsignaciones(H);
+
+            CI= dactual+cotaInferior(D,aux);
+            CS= dactual+cotaSuperior(D,aux);
+            DE= (CS+CI)/2;
+
+            if (H.GetLevel()==n-1 && dactual<best_discrepancia) {
+                ab=H;
+                best_discrepancia=dactual;
+                C=(C>dactual)?dactual: C;
+            } else {
+                if (CI<=C ) {
+                    nodo anew (dactual,CI,DE,CS,H);
+                    pq.push(anew);
+                    C= (C>CS)? CS:C;
+                }
+            }
         }
 
-        P.GeneraSiguienteAnchura();
-        if(P.GetLevel() > 0) seguir = false;
-    } while(seguir);
+    } while (!pq.empty());
 
-
-    while(!pq.empty()) { //Mientras queden nodos
-        nodo nn = pq.top();
-        pq.pop();
-        nodos_recorridos++;
-
-        if(nn.CI <= C) { //Si lo mejor es peor que la cota podamos
-            vector<vector<int>> hijos = nn.ab.GeneraHijos();
-
-            for(int i = 0 ;  i < hijos.size(); i++) {
-                Apermutacion H(hijos[i],nn.ab.GetLevel()+1);
-                dactual = Suma_Discrepancias(H,D)*2;
-                asignados = obtenerAsignaciones(H);
-                CS = dactual + cotaSuperior(D,asignados);
-                CI = dactual + cotaInferior(D,asignados);
-                DE = (CI+CS)/2;
-
-                if(H.GetLevel() == n/2 -1 && dactual < best_discrepancia) {
-                    cout << "NIVEL: " << H.GetLevel() << endl;
-                    cout << asignados.size()<< endl;
-                    best_discrepancia = dactual;
-                    if(C > dactual) C = dactual;
-                    mejor_permutacion = H;
-                } else {
-                    if(CI <= C) {
-                        nodo nuevo(dactual,CI,DE,CS,H);
-                        pq.push(nuevo);
-                        if(C > CS) C = CS;
-                    }
-                }
-            } // for
-        } // if
-    } //while
-
-    int total = P.NumeroSecuenciasPosibles();
-
-    cout << "Numero de nodos recorridos " << nodos_recorridos
-         << " ,total nodos " << total
-         << " ,Porcentaje " << (nodos_recorridos / (double) total) * 100.0 << endl;
-
-    ab = mejor_permutacion;
-    cout << ab << endl;
-
+    int total=ab.NumeroSecuenciasPosibles();
+    cout<<"Numero de nodos recorridos "<<nodos_recorridos<< " total nodos "
+        <<total<<" Porcentaje "<<(nodos_recorridos/(double)total)*100.0<<endl;
     return best_discrepancia;
 }
+
 
 void printSolucion(const Apermutacion &P) {
     int i = 1;
@@ -268,15 +229,11 @@ void printSolucion(const Apermutacion &P) {
         aux.push_back(make_pair(*it,i));
         i++;
     }
-
-    /* for(pair<int,int> i: aux) {
-         cout << "Persona: " << i.first << " con persona: " << i.second << endl;
-     }*/
 }
 
 void sintaxis() {
     cerr << "Sintaxis:" << endl;
-    cerr << "  ./bactb archivo_gustos.txt" << endl;
+    cerr << "  ./dactualb archivo_gustos.txt" << endl;
     exit(EXIT_FAILURE);
 }
 
@@ -291,7 +248,7 @@ int main(int argc, char *argv[]) {
     vector <vector<int>> matriz = matrizDiscrepancias(f);
     Apermutacion P(matriz.size());
 
-    cout << matriz << endl;
+   // cout << matriz << endl;
 
     int discrepancia = asignParejas(matriz.size(), P, matriz);
 

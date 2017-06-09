@@ -32,7 +32,7 @@ public:
    * 
    * */
   Apermutacion(int n):datos(vector<int>(n,0)),level(-1){
-    GeneraSiguienteProfundidad();
+    //GeneraSiguienteProfundidad();
   }
    
    
